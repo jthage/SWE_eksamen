@@ -1,0 +1,18 @@
+drop database if exists studie;
+create database studie;
+
+drop table if exists students cascade;
+create table students (id serial Primary key, firstname varchar(50),
+      lastname varchar(50), dateofbirth date);
+
+drop table if exists courses cascade;
+create table courses (id serial Primary key, name varchar(50),
+      shortname varchar(12), points money,
+      semester integer references semester(id));
+
+drop table if exists student_course_mapping cascade;
+create table student_course_mapping (student_id integer references students(id),
+      course_id integer references courses(id));
+
+drop table if exists semester cascade;
+create table semester (id serial primary key, name varchar(40));

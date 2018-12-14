@@ -1,0 +1,77 @@
+version: '3'
+
+services:
+
+  nginx:
+
+    image: "nginx:latest"
+
+    container_name: "nginx"
+
+
+
+    ports:
+
+      - "5000:5000"
+
+    volumes:
+
+      - ./nginx.conf:/etc/nginx/nginx.conf
+
+    networks:
+
+      - web_nw
+
+    depends_on:
+
+      - flask
+
+
+
+  flask:
+
+    build: ./flask
+
+    container_name: "flask"
+
+    volumes:
+
+      - ./flask:/opt/services/flask/src
+
+    networks:
+
+      - pg_nw
+
+      - web_nw
+
+    depends_on:
+
+      - postgres
+
+
+
+  postgres:
+
+    container_name: "postgres"
+
+    image: "postgres:latest"
+
+    networks:
+
+      - pg_nw
+
+    volumes:
+
+      - ./backup:/var/lib/postgresql/data
+
+
+
+networks:
+
+  pg_nw:
+
+    driver: bridge
+
+  web_nw:
+
+    driver: bridge
